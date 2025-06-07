@@ -3,17 +3,25 @@
 #include <errno.h>
 
 
-int exec_builtin(char **args, char **env)
+int exec_builtin(char **args, char ***env)
 {
     if (!args || !args[0])
         return 1;
 
     if (ft_strcmp(args[0], "echo") == 0)
+    {
+        printf("\n --- echo --- \n");
         return ft_echo(args);
+    }
+        
     if (ft_strcmp(args[0], "cd") == 0)
         return ft_cd(args, env);
     if (ft_strcmp(args[0], "pwd") == 0)
+    {
+        printf("\n --- echo --- \n");
         return ft_pwd(args);
+    }
+        
     if (ft_strcmp(args[0], "export") == 0)
         return ft_export(args, env);
     if (ft_strcmp(args[0], "unset") == 0)
@@ -32,7 +40,7 @@ int ft_echo(char **args) {
     int newline = 1;
     int i = 1;
 
-    while (args[i] && args[i][0] == '-' && args[i][1] == 'n') {
+    while (args[i] && args[i][0] == '-' &&  args[i][1] == 'n') {
         int j = 2;
         while (args[i][j] == 'n')
             j++;
@@ -56,8 +64,8 @@ int ft_echo(char **args) {
 
 int ft_cd(char **args, char ***env) {
     char *path = args[1];
-    char cwd[PATH_MAX];
-    char oldpwd[PATH_MAX];
+    char cwd[100];
+    char oldpwd[100];
 
     if (getcwd(oldpwd, sizeof(oldpwd)) == NULL) {
         perror("cd");
@@ -95,7 +103,7 @@ int ft_cd(char **args, char ***env) {
 
 int ft_pwd(char **args)
 {
-    char cwd[PATH_MAX];
+    char cwd[100];
     (void)args;
     if (getcwd(cwd, sizeof(cwd))) {
         ft_printf("%s\n", cwd);
@@ -182,7 +190,8 @@ int add_or_update_env(char *key, char *value, char ***env) {
 }
 
 
-int cmp_env(const void *a, const void *b) {
+int cmp_env(const void *a, const void *b)
+{
     const char *s1 = *(const char **)a;
     const char *s2 = *(const char **)b;
     return ft_strcmp((char *)s1, (char *)s2);
