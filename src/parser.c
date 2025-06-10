@@ -255,7 +255,7 @@ void parse_token(t_token *toklist, t_minishell **minishell)
     if (!cmd)
         printf("no cmd\n");
 	
-    handle_exec(cmd, minishell, (*minishell)->cmd);
+    handle_exec(cmd, minishell);
 	/*printf("\n=== Liste des tokens ===\n");
 	while (toklist)
 	{

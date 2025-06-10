@@ -18,6 +18,23 @@
 
 extern int g_exit_status;
 
+
+typedef enum e_redir_type
+{
+    R_INPUT,
+    R_OUTPUT,
+    R_APPEND,
+    R_HEREDOC
+}   t_redir_type;
+
+typedef struct s_redir
+{
+    t_redir_type    type;
+    char            *file;
+    int             fd;
+    struct s_redir  *next;
+}   t_redir;
+
 typedef struct	s_cmd
 {
     char			*value;
@@ -30,6 +47,7 @@ typedef struct	s_minishell
     char			**envp;
     t_list			*token;
 	t_list			*h_history;
+	int					last_status;
 
 }				t_minishell;
 
@@ -76,7 +94,7 @@ t_token	*build_list(char **tab);
 int	get_type(const char *tok);
 
 //exec
-void    handle_exec(t_command *cmd, t_minishell **ms, int cmd_count);
+void    handle_exec(t_command *cmd, t_minishell **ms);
 int ft_strcmp(char *s1, char *s2);
 
 // built-in
